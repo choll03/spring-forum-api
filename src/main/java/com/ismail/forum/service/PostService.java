@@ -53,9 +53,7 @@ public class PostService {
 
         // convert post to post collection response
         List<PostListResponse> responses = new ArrayList<>();
-        posts.stream().forEach(post -> {
-            responses.add(Response.convertPostToCollectionResponse(post));
-        });
+        posts.forEach(post -> responses.add(Response.convertPostToCollectionResponse(post)));
 
         entityManager.close();
 
@@ -80,12 +78,11 @@ public class PostService {
 
         Integer postId = ((BigInteger) entityManager.createNativeQuery("SELECT LAST_INSERT_ID()").getSingleResult()).intValue();
 
-        postRequest.getTags().forEach(tag -> {
-            entityManager.createNativeQuery("INSERT INTO posts_tags(posts_id, tags_id) VALUE (:post_id, :tag_id)")
+        postRequest.getTags().forEach(tag -> entityManager.createNativeQuery("INSERT INTO posts_tags(posts_id, tags_id) VALUE (:post_id, :tag_id)")
                     .setParameter("post_id", postId)
                     .setParameter("tag_id", tag)
-                    .executeUpdate();
-        });
+                    .executeUpdate()
+        );
 
         entityManager.close();
 
@@ -110,12 +107,11 @@ public class PostService {
             .setParameter("post_id", id)
             .executeUpdate();
 
-        postRequest.getTags().forEach(tag -> {
-            entityManager.createNativeQuery("INSERT INTO posts_tags(posts_id, tags_id) VALUE (:post_id, :tag_id)")
+        postRequest.getTags().forEach(tag -> entityManager.createNativeQuery("INSERT INTO posts_tags(posts_id, tags_id) VALUE (:post_id, :tag_id)")
                     .setParameter("post_id", id)
                     .setParameter("tag_id", tag)
-                    .executeUpdate();
-        });
+                    .executeUpdate()
+        );
 
         return findPostById(id);
     }
@@ -130,9 +126,7 @@ public class PostService {
     }
 
     private Post findPostOrNotFound(Integer id) {
-        String postQuery = "SELECT * " +
-                "FROM posts " +
-                "WHERE id = :id";
+        String postQuery = "SELECT * FROM posts WHERE id = :id";
 
         Query query = entityManager.createNativeQuery(postQuery, Post.class);
         query.setParameter("id", id);

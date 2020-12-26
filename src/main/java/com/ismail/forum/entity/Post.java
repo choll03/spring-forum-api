@@ -43,9 +43,6 @@ public class Post {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @Transient
-    private Integer commentCount;
-
     public Post() {
     }
 
@@ -113,14 +110,6 @@ public class Post {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
-    }
-
-    public Integer getCommentCount() {
-        return commentCount;
-    }
-
-    public void setCommentCount(Integer commentCount) {
-        this.commentCount = commentCount;
     }
 
     @Override

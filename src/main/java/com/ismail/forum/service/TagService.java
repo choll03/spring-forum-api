@@ -23,7 +23,7 @@ public class TagService {
         List<Tag> tags = this.tagRepository.getTags();
 
         List<TagResponse> responses = new ArrayList<TagResponse>();
-        tags.stream().forEach(tag -> {
+        tags.forEach(tag -> {
             responses.add(Response.convertTagToResponse(tag));
         });
 

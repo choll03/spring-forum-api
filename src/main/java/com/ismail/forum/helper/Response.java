@@ -37,12 +37,10 @@ public class Response {
 
     public static PostResponse convertPostToResponse(Post post) {
         List<TagResponse> tags = new ArrayList<TagResponse>();
-        post.getTags().stream().forEach(tag -> tags.add(convertTagToResponse(tag)));
+        post.getTags().forEach(tag -> tags.add(convertTagToResponse(tag)));
 
         List<CommentResponse> comments = new ArrayList<>();
-        post.getComments().stream().forEach(comment -> {
-            comments.add(convertCommentToResponse(comment));
-        });
+        post.getComments().forEach(comment -> comments.add(convertCommentToResponse(comment)));
 
         return new PostResponse(
                 post.getId(),
