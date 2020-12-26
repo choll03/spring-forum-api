@@ -69,18 +69,18 @@ public class PostService {
     @Transactional
     public PostResponse createPost(PostRequest postRequest) {
 
-        Query q = entityManager.createNativeQuery("INSERT INTO posts (post, user_id, created_at, updated_at) VALUES (:post, :user_id, :created_at, :updated_at)", Post.class);
+        Query q = entityManager.createNativeQuery("INSERT INTO posts (post, user_id, created_at, updated_at) VALUES (:post, :userId, :createdAt, :updatedAt)", Post.class);
         q.setParameter("post", postRequest.getPost())
-                .setParameter("user_id", postRequest.getUserId())
-                .setParameter("created_at", new Date())
-                .setParameter("updated_at", new Date())
+                .setParameter("userId", postRequest.getUserId())
+                .setParameter("createdAt", new Date())
+                .setParameter("updatedAt", new Date())
                 .executeUpdate();
 
         Integer postId = ((BigInteger) entityManager.createNativeQuery("SELECT LAST_INSERT_ID()").getSingleResult()).intValue();
 
-        postRequest.getTags().forEach(tag -> entityManager.createNativeQuery("INSERT INTO posts_tags(posts_id, tags_id) VALUE (:post_id, :tag_id)")
-                    .setParameter("post_id", postId)
-                    .setParameter("tag_id", tag)
+        postRequest.getTags().forEach(tag -> entityManager.createNativeQuery("INSERT INTO posts_tags(posts_id, tags_id) VALUE (:postId, :tagId)")
+                    .setParameter("postId", postId)
+                    .setParameter("tagId", tag)
                     .executeUpdate()
         );
 
@@ -97,19 +97,19 @@ public class PostService {
 
     @Transactional
     public PostResponse updatePost(Integer id, PostRequest postRequest) {
-        Query q = entityManager.createNativeQuery("UPDATE posts SET post=:post, updated_at = :updated_at WHERE id = :id", Post.class);
+        Query q = entityManager.createNativeQuery("UPDATE posts SET post=:post, updated_at = :updatedAt WHERE id = :id", Post.class);
         q.setParameter("post", postRequest.getPost())
-                .setParameter("updated_at", new Date())
+                .setParameter("updatedAt", new Date())
                 .setParameter("id", id)
                 .executeUpdate();
 
-        entityManager.createNativeQuery("DELETE FROM posts_tags WHERE posts_id = :post_id")
-            .setParameter("post_id", id)
+        entityManager.createNativeQuery("DELETE FROM posts_tags WHERE posts_id = :postId")
+            .setParameter("postId", id)
             .executeUpdate();
 
-        postRequest.getTags().forEach(tag -> entityManager.createNativeQuery("INSERT INTO posts_tags(posts_id, tags_id) VALUE (:post_id, :tag_id)")
-                    .setParameter("post_id", id)
-                    .setParameter("tag_id", tag)
+        postRequest.getTags().forEach(tag -> entityManager.createNativeQuery("INSERT INTO posts_tags(posts_id, tags_id) VALUE (:postId, :tagId)")
+                    .setParameter("postId", id)
+                    .setParameter("tagId", tag)
                     .executeUpdate()
         );
 
