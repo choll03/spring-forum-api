@@ -1,6 +1,7 @@
 package com.ismail.forum.service;
 
 import com.ismail.forum.entity.Post;
+import com.ismail.forum.error.NotFoundException;
 import com.ismail.forum.helper.Response;
 import com.ismail.forum.model.*;
 import org.springframework.stereotype.Component;
@@ -69,8 +70,8 @@ public class PostService {
     @Transactional
     public PostResponse createPost(PostRequest postRequest) {
 
-        Query q = entityManager.createNativeQuery("INSERT INTO posts (post, user_id, created_at, updated_at) VALUES (:post, :userId, :createdAt, :updatedAt)", Post.class);
-        q.setParameter("post", postRequest.getPost())
+        entityManager.createNativeQuery("INSERT INTO posts (post, user_id, created_at, updated_at) VALUES (:post, :userId, :createdAt, :updatedAt)", Post.class)
+                .setParameter("post", postRequest.getPost())
                 .setParameter("userId", postRequest.getUserId())
                 .setParameter("createdAt", new Date())
                 .setParameter("updatedAt", new Date())
@@ -97,8 +98,8 @@ public class PostService {
 
     @Transactional
     public PostResponse updatePost(Integer id, PostRequest postRequest) {
-        Query q = entityManager.createNativeQuery("UPDATE posts SET post=:post, updated_at = :updatedAt WHERE id = :id", Post.class);
-        q.setParameter("post", postRequest.getPost())
+        entityManager.createNativeQuery("UPDATE posts SET post=:post, updated_at = :updatedAt WHERE id = :id", Post.class)
+                .setParameter("post", postRequest.getPost())
                 .setParameter("updatedAt", new Date())
                 .setParameter("id", id)
                 .executeUpdate();
@@ -128,12 +129,15 @@ public class PostService {
     private Post findPostOrNotFound(Integer id) {
         String postQuery = "SELECT * FROM posts WHERE id = :id";
 
-        Query query = entityManager.createNativeQuery(postQuery, Post.class);
-        query.setParameter("id", id);
+        Query query = entityManager.createNativeQuery(postQuery, Post.class)
+                .setParameter("id", id);
+
+        if(query.getResultList().isEmpty()){
+            throw new NotFoundException("Data Not Found!");
+        }
         Post post = (Post) query.getSingleResult();
 
         entityManager.close();
-
         return post;
 
     }
@@ -141,8 +145,8 @@ public class PostService {
 
     @Transactional
     public PostResponse createComment(Integer postId, CommentRequest commentRequest) {
-        Query query = entityManager.createNativeQuery("INSERT into comments(post_id, user_id, comment, created_at) VALUE (:postId, :userId, :comment, :createdAt)");
-        query.setParameter("postId", postId)
+        entityManager.createNativeQuery("INSERT into comments(post_id, user_id, comment, created_at) VALUE (:postId, :userId, :comment, :createdAt)")
+                .setParameter("postId", postId)
                 .setParameter("userId", commentRequest.getUserId())
                 .setParameter("comment", commentRequest.getComment())
                 .setParameter("createdAt", new Date())
@@ -155,8 +159,8 @@ public class PostService {
 
     @Transactional
     public PostResponse updateComment(Integer postId, Integer commentId, CommentRequest commentRequest) {
-        Query query = entityManager.createNativeQuery("UPDATE comments SET comment= :comment, updated_at= :updatedAt WHERE id = :id");
-        query.setParameter("comment", commentRequest.getComment())
+        entityManager.createNativeQuery("UPDATE comments SET comment= :comment, updated_at= :updatedAt WHERE id = :id")
+                .setParameter("comment", commentRequest.getComment())
                 .setParameter("updatedAt", new Date())
                 .setParameter("id", commentId)
                 .executeUpdate();
@@ -167,8 +171,8 @@ public class PostService {
 
     @Transactional
     public PostResponse deleteComment(Integer postId, Integer commentId) {
-        Query query = entityManager.createNativeQuery("DELETE FROM comments WHERE id = :id");
-        query.setParameter("id", commentId)
+        entityManager.createNativeQuery("DELETE FROM comments WHERE id = :id")
+                .setParameter("id", commentId)
                 .executeUpdate();
 
         return findPostById(postId);

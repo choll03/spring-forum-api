@@ -1,8 +1,14 @@
 package com.ismail.forum.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class CommentRequest {
 
+    @NotBlank(message = "Comment is required")
     private String comment;
+
+    @NotNull(message = "User is required")
     private Integer userId;
 
     public CommentRequest() {

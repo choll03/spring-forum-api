@@ -3,9 +3,11 @@ package com.ismail.forum.controller;
 import com.ismail.forum.model.*;
 import com.ismail.forum.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,7 +28,8 @@ public class PostController {
     }
 
     @PostMapping
-    public WebResponse<PostResponse> createPost(@RequestBody PostRequest postRequest) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public WebResponse<PostResponse> createPost(@Valid @RequestBody PostRequest postRequest) {
         return new WebResponse<PostResponse>(
                 201,
                 "ok",
@@ -44,7 +47,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public WebResponse<PostResponse> updatePost(@PathVariable Integer id, @RequestBody PostRequest postRequest) {
+    public WebResponse<PostResponse> updatePost(@PathVariable Integer id, @Valid @RequestBody PostRequest postRequest) {
         return new WebResponse<PostResponse>(
                 200,
                 "ok",
@@ -63,7 +66,8 @@ public class PostController {
     }
 
     @PostMapping("/{postId}/comments")
-    public WebResponse<PostResponse> createComment(@PathVariable("postId") Integer postId,@RequestBody CommentRequest commentRequest) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public WebResponse<PostResponse> createComment(@PathVariable("postId") Integer postId, @Valid @RequestBody CommentRequest commentRequest) {
         return new WebResponse<PostResponse>(
                 201,
                 "ok",
@@ -75,7 +79,7 @@ public class PostController {
     public WebResponse<PostResponse> updateComment(
             @PathVariable("postId") Integer postId,
             @PathVariable("commentId") Integer commentId,
-            @RequestBody CommentRequest commentRequest
+            @Valid @RequestBody CommentRequest commentRequest
             ) {
         return new WebResponse<PostResponse>(
                 200,

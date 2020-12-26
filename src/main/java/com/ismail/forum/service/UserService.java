@@ -34,7 +34,7 @@ public class UserService {
         Optional<User> user = this.userRepository.findById(id);
 
         if(user.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Data not Found");
         }
         return user.get();
     }

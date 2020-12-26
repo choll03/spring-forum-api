@@ -5,8 +5,10 @@ import com.ismail.forum.model.TagResponse;
 import com.ismail.forum.model.WebResponse;
 import com.ismail.forum.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +37,8 @@ public class TagController {
     }
 
     @PostMapping
-    public WebResponse<TagResponse> createTag(@RequestBody TagRequest tagRequest) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public WebResponse<TagResponse> createTag(@Valid @RequestBody TagRequest tagRequest) {
         return new WebResponse<TagResponse>(
                 201,
                 "ok",
@@ -44,7 +47,7 @@ public class TagController {
     }
 
     @PutMapping("/{id}")
-    public WebResponse<TagResponse> updateTag(@PathVariable Integer id, @RequestBody TagRequest tagRequest) {
+    public WebResponse<TagResponse> updateTag(@PathVariable Integer id, @Valid @RequestBody TagRequest tagRequest) {
         return new WebResponse<TagResponse>(
                 200,
                 "ok",

@@ -1,7 +1,10 @@
 package com.ismail.forum.model;
 
+import javax.validation.constraints.NotBlank;
+
 public class TagRequest {
 
+    @NotBlank(message = "Name not be blank")
     private String name;
 
     public TagRequest() {}

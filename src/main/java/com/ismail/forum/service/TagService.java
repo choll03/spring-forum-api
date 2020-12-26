@@ -55,7 +55,7 @@ public class TagService {
         Optional<Tag> tag = this.tagRepository.findById(id);
 
         if(tag.isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException("Data not Found");
         }
         return tag.get();
     }

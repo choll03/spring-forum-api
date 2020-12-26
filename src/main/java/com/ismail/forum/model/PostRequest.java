@@ -1,10 +1,15 @@
 package com.ismail.forum.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class PostRequest {
 
+    @NotBlank(message = "Post is required")
     private String post;
+
+    @NotNull(message = "User is required")
     private Integer userId;
     private List<Integer> tags;
 
