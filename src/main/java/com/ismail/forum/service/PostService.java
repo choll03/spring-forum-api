@@ -71,17 +71,15 @@ public class PostService {
     @Transactional
     public PostResponse createPost(PostRequest postRequest) {
 
-        // table posts
         Query q = entityManager.createNativeQuery("INSERT INTO posts (post, user_id, created_at, updated_at) VALUES (:post, :user_id, :created_at, :updated_at)", Post.class);
         q.setParameter("post", postRequest.getPost())
                 .setParameter("user_id", postRequest.getUserId())
                 .setParameter("created_at", new Date())
                 .setParameter("updated_at", new Date())
                 .executeUpdate();
-        // get last post ID
+
         Integer postId = ((BigInteger) entityManager.createNativeQuery("SELECT LAST_INSERT_ID()").getSingleResult()).intValue();
 
-        // insert table pivot (posts_tags)
         postRequest.getTags().forEach(tag -> {
             entityManager.createNativeQuery("INSERT INTO posts_tags(posts_id, tags_id) VALUE (:post_id, :tag_id)")
                     .setParameter("post_id", postId)
