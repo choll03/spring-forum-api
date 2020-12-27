@@ -41,14 +41,12 @@ public class TagService {
     }
 
     public TagResponse updateTag(Integer id, TagRequest tagRequest) {
-        Tag tag = findTagOrNotFound(id);
-        tag.setName(tagRequest.getName());
-        return Response.convertTagToResponse(this.tagRepository.saveAndFlush(tag));
+        this.tagRepository.updateTagById(id, tagRequest.getName());
+        return findById(id);
     }
 
     public void deleteTag(Integer id) {
-        Tag tag = findTagOrNotFound(id);
-        this.tagRepository.delete(tag);
+        this.tagRepository.deleteTagById(id);
     }
 
     private Tag findTagOrNotFound(Integer id) {

@@ -18,11 +18,8 @@ public class UserService {
     private UserRepository userRepository;
 
     public UserResponse register(RegisterRequest registerRequest) {
-
-        User user = new User();
-        user.setName(registerRequest.getName());
-        user.setEmail(registerRequest.getEmail());
-        return Response.convertUserToResponse(this.userRepository.save(user));
+        this.userRepository.register(registerRequest.getName(), registerRequest.getEmail());
+        return profile(this.userRepository.getLastId().intValue());
     }
 
     public UserResponse profile(Integer id) {

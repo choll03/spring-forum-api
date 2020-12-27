@@ -1,0 +1,11 @@
+version: '3.3'
+
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: forum_db
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_PASSWORD: root
+    ports:
+      - 3306:3306

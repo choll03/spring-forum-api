@@ -1,5 +1,6 @@
 package com.ismail.forum.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CommentResponse {
@@ -35,8 +36,8 @@ public class CommentResponse {
         this.comment = comment;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public String getCreatedAt() {
+        return new SimpleDateFormat("dd MMMM yyy HH:mm").format(createdAt);
     }
 
     public void setCreatedAt(Date createdAt) {
