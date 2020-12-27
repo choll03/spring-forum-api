@@ -27,7 +27,7 @@ public class PostController {
         return this.postService.getPosts(new PaginationRequest(url, page), keyword);
     }
 
-    @org.springframework.web.bind.annotation.PostMapping
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public WebResponse<PostResponse> createPost(@Valid @RequestBody PostRequest postRequest) {
         return new WebResponse<PostResponse>(
@@ -65,7 +65,7 @@ public class PostController {
         );
     }
 
-    @org.springframework.web.bind.annotation.PostMapping("/{postId}/comments")
+    @PostMapping("/{postId}/comments")
     @ResponseStatus(HttpStatus.CREATED)
     public WebResponse<PostResponse> createComment(@PathVariable("postId") Integer postId, @Valid @RequestBody CommentRequest commentRequest) {
         return new WebResponse<PostResponse>(
