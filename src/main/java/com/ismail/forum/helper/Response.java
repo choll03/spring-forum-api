@@ -1,9 +1,6 @@
 package com.ismail.forum.helper;
 
-import com.ismail.forum.entity.Comment;
-import com.ismail.forum.entity.Post;
-import com.ismail.forum.entity.Tag;
-import com.ismail.forum.entity.User;
+import com.ismail.forum.entity.*;
 import com.ismail.forum.model.*;
 
 import java.util.ArrayList;
@@ -46,18 +43,24 @@ public class Response {
                 post.getId(),
                 post.getPost(),
                 post.getCreatedAt(),
+                comments.size(),
                 convertUserToResponse(post.getUser()),
                 tags,
                 comments
         );
     }
 
-    public static PostListResponse convertPostToCollectionResponse(Post post) {
+    public static PostListResponse convertPostToCollectionResponse(PostMapping postMapping) {
         return new PostListResponse(
-                post.getId(),
-                post.getPost(),
-                post.getCreatedAt(),
-                convertUserToResponse(post.getUser())
+                postMapping.getId(),
+                postMapping.getPost(),
+                postMapping.getCreatedAt(),
+                postMapping.getCommentCount(),
+                new UserResponse(
+                        postMapping.getUserId(),
+                        postMapping.getName(),
+                        postMapping.getEmail()
+                )
         );
     }
 }

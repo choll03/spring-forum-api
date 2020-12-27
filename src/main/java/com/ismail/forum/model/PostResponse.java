@@ -1,6 +1,5 @@
 package com.ismail.forum.model;
 
-
 import java.util.Date;
 import java.util.List;
 
@@ -12,8 +11,8 @@ public class PostResponse extends PostListResponse{
     public PostResponse() {
     }
 
-    public PostResponse(Integer id, String post, Date createdAt, UserResponse user, List<TagResponse> tags, List<CommentResponse> comments) {
-        super(id, post, createdAt, user);
+    public PostResponse(Integer id, String post, Date createdAt, Integer commentCount,UserResponse user, List<TagResponse> tags, List<CommentResponse> comments) {
+        super(id, post, createdAt, commentCount, user);
         this.tags = tags;
         this.comments = comments;
     }

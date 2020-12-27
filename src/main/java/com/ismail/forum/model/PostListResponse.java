@@ -8,6 +8,7 @@ public class PostListResponse {
     private Integer id;
     private String post;
     private Date createdAt;
+    private Integer commentCount;
     private UserResponse user;
 
     public PostListResponse() {
@@ -19,10 +20,11 @@ public class PostListResponse {
         this.createdAt = createdAt;
     }
 
-    public PostListResponse(Integer id, String post, Date createdAt, UserResponse user) {
+    public PostListResponse(Integer id, String post, Date createdAt, Integer commentCount, UserResponse user) {
         this.id = id;
         this.post = post;
         this.createdAt = createdAt;
+        this.commentCount = commentCount;
         this.user = user;
     }
 
@@ -48,6 +50,14 @@ public class PostListResponse {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
     }
 
     public UserResponse getUser() {

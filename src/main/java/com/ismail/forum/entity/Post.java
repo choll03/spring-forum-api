@@ -10,6 +10,23 @@ import java.util.*;
 
 @Entity
 @Table(name = "posts")
+@SqlResultSetMapping(
+        name = "PostMapping",
+        classes = {
+                @ConstructorResult(
+                        targetClass = PostMapping.class,
+                        columns = {
+                                @ColumnResult(name = "id", type = Integer.class),
+                                @ColumnResult(name = "post", type = String.class),
+                                @ColumnResult(name = "created_at", type = Date.class),
+                                @ColumnResult(name = "user_id", type = Integer.class),
+                                @ColumnResult(name = "name", type = String.class),
+                                @ColumnResult(name = "email", type = String.class),
+                                @ColumnResult(name = "comment_count", type = Integer.class)
+                        }
+                )
+        }
+)
 public class Post {
 
     @Id

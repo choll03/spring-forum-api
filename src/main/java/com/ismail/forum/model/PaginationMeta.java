@@ -48,4 +48,8 @@ public class PaginationMeta {
     public void setTotalPage(Integer totalPage) {
         this.totalPage = totalPage;
     }
+
+    public Integer offset() {
+        return (this.getCurrentPage() - 1) * this.getPerPage();
+    }
 }
