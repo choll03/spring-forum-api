@@ -63,4 +63,12 @@ public class Response {
                 )
         );
     }
+
+    public static CustomResponse convertPostToCustomResponse(Post post) {
+        return new CustomResponse(
+                post.getId(),
+                post.getPost()
+        );
+    }
+
 }

@@ -163,4 +163,32 @@ public class PostService {
 
         entityManager.close();
     }
+
+    public List<CustomResponse> getCustomPosts(String post, String name, String comment) {
+
+        StringBuilder queryPost = new StringBuilder();
+        queryPost.append("SELECT posts.* FROM posts INNER JOIN users ON users.id = posts.user_id");
+
+        if(!post.isEmpty()){
+            queryPost.append(" WHERE posts.post LIKE '%" + post + "%'");
+        }
+
+        if(!name.isEmpty()) {
+            queryPost.append(" AND users.name LIKE '%"+ name +"%'");
+        }
+
+        if(!comment.isEmpty()) {
+            queryPost.append(" AND EXISTS( SELECT comment FROM comments WHERE posts.id = comments.post_id AND comment LIKE '%"+ comment +"%' )");
+        }
+
+        Query query = entityManager.createNativeQuery(queryPost.toString(), Post.class);
+        List<Post> posts = query.getResultList();
+
+        List<CustomResponse> responses = new ArrayList<>();
+
+        posts.forEach(val -> responses.add(Response.convertPostToCustomResponse(val)));
+
+        return responses;
+
+    }
 }

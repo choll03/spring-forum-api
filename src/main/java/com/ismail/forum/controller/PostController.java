@@ -1,5 +1,6 @@
 package com.ismail.forum.controller;
 
+import com.ismail.forum.entity.Post;
 import com.ismail.forum.model.*;
 import com.ismail.forum.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +99,15 @@ public class PostController {
                 "ok",
                 this.postService.deleteComment(postId, commentId)
         );
+    }
+
+    @GetMapping("/custom")
+    public List<CustomResponse> getCustomQuery(
+            @RequestParam("post") String post,
+            @RequestParam("name") String name,
+            @RequestParam("comment") String comment
+
+    ) {
+        return this.postService.getCustomPosts(post, name, comment);
     }
 }
